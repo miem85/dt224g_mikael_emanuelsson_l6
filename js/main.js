@@ -63,7 +63,10 @@ function displayRecipe(recipe) {
   image.src = recipe.image;
   image.alt = recipe.name;
 
+  recipeInfo.textContent = `Portioner: ${recipe.servings} | Förberedelsetid: ${recipe.prepTimeMinutes} min | Tillagningstid: ${recipe.cookTimeMinutes} min | Svårighetsgrad: ${recipe.difficulty}`;
+
   article.appendChild(heading);
   article.appendChild(image);
+  article.appendChild(recipeInfo);
   recipeContainer.appendChild(article);
 }
