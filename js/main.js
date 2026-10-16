@@ -8,6 +8,7 @@
 const searchForm = document.querySelector("#searchform");
 const searchInput = document.querySelector("#search");
 const errorMessage = document.querySelector("#error");
+const recipeContainer = document.querySelector("#recipe");
 
 // Lyssna efter att formuläret skickas
 searchForm.addEventListener("submit", function (event) {
@@ -41,8 +42,28 @@ async function fetchRecipes(searchTerm) {
 
     const data = await response.json();
 
-    console.log("API-svar:", data);
+    if (data.recipes.length > 0) {
+      displayRecipe(data.recipes[0]);
+    }
   } catch (error) {
     console.error("Fel vid hämtning:", error);
   }
+}
+
+// Visa det första receptets namn på webbsidan
+function displayRecipe(recipe) {
+  recipeContainer.innerHTML = "";
+
+  const article = document.createElement("article");
+  const heading = document.createElement("h3");
+  const image = document.createElement("img");
+  const recipeInfo = document.createElement("p");
+
+  heading.textContent = recipe.name;
+  image.src = recipe.image;
+  image.alt = recipe.name;
+
+  article.appendChild(heading);
+  article.appendChild(image);
+  recipeContainer.appendChild(article);
 }
