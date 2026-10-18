@@ -70,7 +70,8 @@ function displayRecipe(recipe) {
   const article = document.createElement("article");
   const heading = document.createElement("h3");
   const image = document.createElement("img");
-  const recipeInfo = document.createElement("p");
+  const recipeInfo = document.createElement("div");
+  recipeInfo.className = "recipe-info";
   const ingredientsHeading = document.createElement("h4");
   const ingredientsList = document.createElement("ul");
   const instructionsHeading = document.createElement("h4");
@@ -80,7 +81,25 @@ function displayRecipe(recipe) {
   image.src = recipe.image;
   image.alt = recipe.name;
 
-  recipeInfo.textContent = `Portioner: ${recipe.servings} | Förberedelsetid: ${recipe.prepTimeMinutes} min | Tillagningstid: ${recipe.cookTimeMinutes} min | Svårighetsgrad: ${recipe.difficulty}`;
+  // Skapa separata rader för receptets information
+  const details = [
+    ["Servings:", recipe.servings],
+    ["Prep time:", `${recipe.prepTimeMinutes} minutes`],
+    ["Cooking time:", `${recipe.cookTimeMinutes} minutes`],
+    ["Difficulty:", recipe.difficulty],
+  ];
+
+  details.forEach(function (detail) {
+    const paragraph = document.createElement("p");
+    const label = document.createElement("strong");
+
+    label.textContent = detail[0] + " ";
+    paragraph.appendChild(label);
+    paragraph.appendChild(document.createTextNode(detail[1]));
+
+    recipeInfo.appendChild(paragraph);
+  });
+
   ingredientsHeading.textContent = "Ingredienser";
 
   // Skapa en listpunkt för varje ingrediens
