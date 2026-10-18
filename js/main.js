@@ -11,7 +11,7 @@ const errorMessage = document.querySelector("#error");
 const message = document.querySelector("#message");
 const recipeContainer = document.querySelector("#recipe");
 
-// Lyssna efter att formuläret skickas
+// Hantera formuläret utan att sidan laddas om
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
@@ -24,9 +24,12 @@ searchForm.addEventListener("submit", function (event) {
     return;
   }
 
-  // Ta bort tidigare felmeddelanden
+  // Rensa tidigare fel- och informationsmeddelanden
   errorMessage.textContent = "";
   message.textContent = "";
+
+  // Ta bort tidigare recept innan en ny sökning
+  recipeContainer.innerHTML = "";
   fetchRecipes(searchTerm);
 });
 
