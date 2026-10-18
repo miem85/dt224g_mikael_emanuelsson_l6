@@ -4,7 +4,7 @@
  * Namn: Mikael Emanuelsson
  */
 
-// Hämta formuläret, sökfältet och felmeddelandet från HTML
+// Hämta HTML-element som används vid sökning och receptvisning
 const searchForm = document.querySelector("#searchform");
 const searchInput = document.querySelector("#search");
 const errorMessage = document.querySelector("#error");
@@ -29,17 +29,19 @@ searchForm.addEventListener("submit", function (event) {
   fetchRecipes(searchTerm);
 });
 
-// Hämta recept från API:et
+// Sök efter recept via API:et och visa den första träffen
 async function fetchRecipes(searchTerm) {
   try {
     const url = `https://dummyjson.com/recipes/search?q=${encodeURIComponent(searchTerm)}`;
 
     const response = await fetch(url);
 
+    // Kontrollera att API-anropet lyckades
     if (!response.ok) {
       throw new Error("Kunde inte hämta recept.");
     }
 
+    // Omvandla JSON-svaret till ett JavaScript-objekt
     const data = await response.json();
 
     if (data.recipes.length > 0) {
@@ -50,16 +52,20 @@ async function fetchRecipes(searchTerm) {
   }
 }
 
-// Visa det första receptets namn på webbsidan
+// Visa receptets information på webbsidan
 function displayRecipe(recipe) {
+  // Ta bort tidigare recept innan ett nytt visas
   recipeContainer.innerHTML = "";
 
+  // Skapa HTML-element för receptets innehåll
   const article = document.createElement("article");
   const heading = document.createElement("h3");
   const image = document.createElement("img");
   const recipeInfo = document.createElement("p");
   const ingredientsHeading = document.createElement("h4");
   const ingredientsList = document.createElement("ul");
+  const instructionsHeading = document.createElement("h4");
+  const instructionsList = document.createElement("ol");
 
   heading.textContent = recipe.name;
   image.src = recipe.image;
@@ -75,10 +81,22 @@ function displayRecipe(recipe) {
     ingredientsList.appendChild(listItem);
   });
 
+  instructionsHeading.textContent = "Tillagning";
+
+  // Skapa ett numrerat steg för varje instruktion
+  recipe.instructions.forEach(function (instruction) {
+    const listItem = document.createElement("li");
+    listItem.textContent = instruction;
+    instructionsList.appendChild(listItem);
+  });
+
+  // Lägg till alla receptdelar i rätt ordning på webbsidan
   article.appendChild(heading);
   article.appendChild(image);
   article.appendChild(recipeInfo);
   article.appendChild(ingredientsHeading);
   article.appendChild(ingredientsList);
+  article.appendChild(instructionsHeading);
+  article.appendChild(instructionsList);
   recipeContainer.appendChild(article);
 }
