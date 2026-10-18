@@ -8,6 +8,7 @@
 const searchForm = document.querySelector("#searchform");
 const searchInput = document.querySelector("#search");
 const errorMessage = document.querySelector("#error");
+const message = document.querySelector("#message");
 const recipeContainer = document.querySelector("#recipe");
 
 // Lyssna efter att formuläret skickas
@@ -25,7 +26,7 @@ searchForm.addEventListener("submit", function (event) {
 
   // Ta bort tidigare felmeddelanden
   errorMessage.textContent = "";
-
+  message.textContent = "";
   fetchRecipes(searchTerm);
 });
 
@@ -46,9 +47,17 @@ async function fetchRecipes(searchTerm) {
 
     if (data.recipes.length > 0) {
       displayRecipe(data.recipes[0]);
+    } else {
+      // Visa meddelande om sökningen inte gav några träffar
+      recipeContainer.innerHTML = "";
+      message.textContent = "Inga recept hittades. Prova en annan sökfras.";
     }
   } catch (error) {
+    // Visa ett felmeddelande om API-anropet misslyckas
     console.error("Fel vid hämtning:", error);
+    recipeContainer.innerHTML = "";
+    message.textContent =
+      "Något gick fel när recepten skulle hämtas. Försök igen senare.";
   }
 }
 
