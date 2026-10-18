@@ -58,15 +58,27 @@ function displayRecipe(recipe) {
   const heading = document.createElement("h3");
   const image = document.createElement("img");
   const recipeInfo = document.createElement("p");
+  const ingredientsHeading = document.createElement("h4");
+  const ingredientsList = document.createElement("ul");
 
   heading.textContent = recipe.name;
   image.src = recipe.image;
   image.alt = recipe.name;
 
   recipeInfo.textContent = `Portioner: ${recipe.servings} | Förberedelsetid: ${recipe.prepTimeMinutes} min | Tillagningstid: ${recipe.cookTimeMinutes} min | Svårighetsgrad: ${recipe.difficulty}`;
+  ingredientsHeading.textContent = "Ingredienser";
+
+  // Skapa en listpunkt för varje ingrediens
+  recipe.ingredients.forEach(function (ingredient) {
+    const listItem = document.createElement("li");
+    listItem.textContent = ingredient;
+    ingredientsList.appendChild(listItem);
+  });
 
   article.appendChild(heading);
   article.appendChild(image);
   article.appendChild(recipeInfo);
+  article.appendChild(ingredientsHeading);
+  article.appendChild(ingredientsList);
   recipeContainer.appendChild(article);
 }
